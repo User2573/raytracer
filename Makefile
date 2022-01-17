@@ -1,5 +1,7 @@
 linkTarget = raytracer
 
+
+
 LIBS = -lSDL2
 
 CFLAGS = -std=c++17
