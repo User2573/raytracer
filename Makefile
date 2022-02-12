@@ -2,7 +2,7 @@ linkTarget = raytracer.out
 
 
 
-CFLAGS = -std=c++17 -Wall -Wextra
+CFLAGS = -std=c++17 -Wall -Wextra -Wpedantic
 
 objects = main.o \
           $(patsubst %.cpp,%.o,$(wildcard ./**/*.cpp))
