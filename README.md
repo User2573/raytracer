@@ -10,7 +10,7 @@ The compiled program takes a filename and outputs a PPM image. If you want to mo
 * `vector.hpp`     : contains the `Vector` class (with aliases `Point` and `Color`).
 * `ray.hpp`        : contains the `Ray` class.
 * `random.hpp`     : contains the `random01` functor and the functions `randomVectorInSphere` / `randomUnitVector`.
-### TODO \/
+### TODO \\|/
 ### camera/
 ### material/
 ### object/
