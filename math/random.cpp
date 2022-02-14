@@ -5,11 +5,6 @@
 
 
 
-void initializeRandom()
-{
-	random01.init();
-}
-
 Vector randomVectorInSphere()
 {
 	Vector direction;
