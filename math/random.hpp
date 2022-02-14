@@ -15,10 +15,10 @@ class
 	std::mt19937 gen{ std::random_device{}() };
 
 public:
-  double operator () ()
-  {
-	  return dist(gen);
-  }
+	double operator () ()
+	{
+		return dist(gen);
+	}
 } random01;
 
 Vector randomVectorInSphere();
