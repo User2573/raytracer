@@ -1,4 +1,3 @@
 # precompiled stuff
 *.o
-*.gch
-
+*.out
