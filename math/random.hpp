@@ -15,7 +15,7 @@ class
 	std::mt19937 gen{ std::random_device{}() };
 
 public:
-  double operator () () const
+  double operator () ()
   {
 	  return dist(gen);
   }
