@@ -4,11 +4,14 @@
 
 #include <iostream>
 
+#define VECTOR_HPP_USE_ANONYMOUS_STRUCTS
+
 
 
 class Vector
 {
 public:
+#ifdef VECTOR_HPP_USE_ANONYMOUS_STRUCTS
 	union {
 		struct {
 			double r, g, b;
@@ -17,6 +20,10 @@ public:
 			double x, y, z;
 		};
 	};
+#else
+	double x, y, z;
+	double r, g, b;
+#endif
 
 
 

@@ -7,15 +7,15 @@
 
 Vector randomVectorInSphere()
 {
-	Vector direction;
+	Vector random;
 	do
 	{
-		direction = 2.0 * Vector(
+		random = 2.0 * Vector(
 			random01() - 0.5, random01() - 0.5, random01() - 0.5
 		);
 	}
-	while (length2(direction) >= 1.0);
-	return direction;
+	while (length2(random) >= 1.0);
+	return random;
 }
 
 Vector randomUnitVector()
@@ -27,6 +27,32 @@ Vector randomUnitVector()
 			random01() - 0.5, random01() - 0.5, random01() - 0.5
 		);
 	}
-	while (1e-8 > length2(direction) && length2(direction) >= 1.0);
+	while(length2(direction) <= 1e-8 || length2(direction) >= 1);
 	return normalize(direction);
+}
+
+Vector randomVectorInXYDisk()
+{
+	Vector random;
+	do
+	{
+		random = 2.0 * Vector(
+			random01() - 0.5, random01() - 0.5, 0
+		);
+	}
+	while(length2(random) >= 1);
+	return random;
+}
+
+Vector ranndomUnitXYVector()
+{
+	Vector direction;
+	do
+	{
+		direction = 2.0 * Vector(
+			random01() - 0.5, random01() - 0.2, 0
+		);
+	}
+	while(length2(direction) <= 1e-8 || length2(direction) >= 1);
+	return direction;
 }

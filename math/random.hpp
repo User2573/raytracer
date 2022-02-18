@@ -25,6 +25,10 @@ Vector randomVectorInSphere();
 
 Vector randomUnitVector();
 
+Vector randomVectorInXYDisk();
+
+Vector randomUnitXYVector();
+
 
 
 #endif

@@ -2,7 +2,8 @@ linkTarget = raytracer.out
 
 
 
-CFLAGS = -std=c++17 -Wall -Wextra -Wpedantic
+# no -Wpedantic because math/vector.hpp uses anonymous structs
+CFLAGS = -std=c++17 -Wall -Wextra #-Wpedantic
 
 objects = main.o \
           $(patsubst %.cpp,%.o,$(wildcard ./**/*.cpp))

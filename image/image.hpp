@@ -39,3 +39,7 @@ public:
 	// print image... why tho
 	std::string str() const;
 };
+
+
+
+#endif

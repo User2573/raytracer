@@ -3,7 +3,7 @@
 #include "../math/vector.hpp"
 #include "fcolor.hpp"
 
-FColor::FColor() : r(0), g(0), b(0) {};
+FColor::FColor() : r(0), g(0), b(0) {}
 
 FColor::FColor(const unsigned char _x) : r(_x), g(_x), b(_x) {}
 
