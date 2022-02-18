@@ -45,3 +45,8 @@ std::ostream& operator << (std::ostream& os, const Ray& ray)
 	"}";
 	return os;
 }
+
+Ray rayFromTo(Point from, Point to)
+{
+	return Ray(from, to - from);
+}

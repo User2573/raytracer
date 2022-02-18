@@ -15,7 +15,7 @@ class PerspectiveCamera : public ICamera
 	double lensRadius;
 
 public:
-	PerspectiveCamera(Point _lookfrom, Point _lookat, Vector _up, double _fov, double _aspectRatio, double _aperture, double _focalDistance);
+	PerspectiveCamera(Point _lookfrom, Point _lookat, Vector _up, double _fovDeg, double _aspectRatio, double _aperture, double _focalDistance);
 
 	virtual ~PerspectiveCamera() = default;
 

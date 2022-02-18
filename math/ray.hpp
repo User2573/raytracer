@@ -36,4 +36,8 @@ public:
 
 
 
+Ray rayFromTo(Point from, Point to);
+
+
+
 #endif
