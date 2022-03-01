@@ -12,28 +12,28 @@
 
 Image::Image() : Image(128, 128) {}
 
-Image::Image(int _side) : Image(_side, _side) {}
+Image::Image(const int _side) : Image(_side, _side) {}
 
-Image::Image(int _width, int _height) : width(_width), height(_height)
+Image::Image(const int _width, const int _height) : width(_width), height(_height)
 {
 	data.resize(width * height);
 }
 
 
 
-const Color& Image::operator () (int x, int y) const
+const Color& Image::operator () (const int x, const int y) const
 {
 	return data.at(x + y*width);
 }
 
-Color& Image::operator () (int x, int y)
+Color& Image::operator () (const int x, const int y)
 {
 	return data.at(x + y*width);
 }
 
 
 
-void Image::for_each(std::function<void(Color&, int, int)> lambda)
+void Image::for_each(const std::function<void(Color&, int, int)>& lambda)
 {
 	for (int y = 0; y < height; ++y) {
 		for (int x = 0; x < width; ++x) {
@@ -42,8 +42,18 @@ void Image::for_each(std::function<void(Color&, int, int)> lambda)
 	}
 }
 
-//void Image::for_each(std::execution::policy policy, std::function<void(Color&, int, int)> lambda)
-
+template <class ExecutionPolicy>
+void Image::for_each(ExecutionPolicy policy, const std::function<void(Color&, int, int)>& lambda)
+{
+	std::for_each(
+		policy,
+		data.begin(),
+		data.end(),
+		[&lambda](Color& color) {
+			lambda(color, 0, 0);
+		}
+	);
+}
 
 void Image::writeToPPM(const char* filename) const
 {
@@ -62,7 +72,7 @@ void Image::writeToPNG(const char* filename) const
 	std::string ppmname = filename;
 	ppmname += ".ppm";
 	writeToPPM(ppmname.c_str());
-	std::string command = "ffmpeg -loglevel quiet -i ";
+	std::string command = "ffmpeg -loglevel quiet -y -i ";
 	command += ppmname;
 	command += " ";
 	command += filename;
@@ -72,26 +82,27 @@ void Image::writeToPNG(const char* filename) const
 	system(remove.c_str());
 }
 
+
 std::string Image::str() const
 {
 	std::stringstream ss;
 	const Color* pcol = nullptr;
 	for (int y = height - 1; y >= 0; y -= 2) {
 		for (int x = 0; x < width; ++x) {
-			ss << "\e[m";
+			ss << "\033[0m";
 			pcol = &data.at(x + y*width); // top color
-			ss << "\e[48:2:" << int(std::clamp(pcol->r, 0.0, 1.0)*255)
+			ss << "\033[48:2:" << int(std::clamp(pcol->r, 0.0, 1.0)*255)
 			          << ":" << int(std::clamp(pcol->g, 0.0, 1.0)*255)
 			          << ":" << int(std::clamp(pcol->b, 0.0, 1.0)*255) << "m";
 			pcol = &data.at(x + (y-1)*width); // bottom color
-			ss << "\e[38:2:" << int(std::clamp(pcol->r, 0.0, 1.0)*255)
+			ss << "\033[38:2:" << int(std::clamp(pcol->r, 0.0, 1.0)*255)
 			          << ":" << int(std::clamp(pcol->g, 0.0, 1.0)*255)
 			          << ":" << int(std::clamp(pcol->b, 0.0, 1.0)*255) << "m";
 			ss << "\u2585"; // lower five-eights box character
 		}
 		ss << std::endl;
 	}
-//	ss << "\e[m\e[?25h";
+//	ss << "\033[0m\033[?25h";
 
 	return ss.str();
 }

@@ -1,11 +1,10 @@
 #pragma once
-#ifndef IMAGE_HPP
-#define IMAGE_HPP
 
 #include <functional>
 #include <string>
 #include <vector>
 #include "../math/vector.hpp"
+
 
 
 class Image
@@ -16,21 +15,28 @@ protected:
 public:
 	const int width, height;
 
+
+
 	Image();
 
-	Image(int _side);
+	Image(const int _side);
 
-	Image(int _width, int _height);
-
-
-
-	const Color& operator () (int x, int y) const;
-
-	Color& operator () (int x, int y);
+	Image(const int _width, const int _height);
 
 
 
-	void for_each(std::function<void(Color&, int, int)> lambda);
+	// access pixel at position
+	const Color& operator () (const int x, const int y) const;
+
+	Color& operator () (const int x, const int y);
+
+
+
+	void for_each(const std::function<void(Color&, int, int)>& lambda);
+
+	
+	template <class ExecutionPolicy>
+	void for_each(ExecutionPolicy policy, const std::function<void(Color&, int, int)>& lambda);
 
 	void writeToPPM(const char* filename) const;
 
@@ -39,7 +45,3 @@ public:
 	// print image... why tho
 	std::string str() const;
 };
-
-
-
-#endif

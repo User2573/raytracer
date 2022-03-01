@@ -4,12 +4,11 @@
 
 
 
-Vector::Vector() : x(0), y(0), z(0) {};
+Vector::Vector() : x(0), y(0), z(0) {}
 
 Vector::Vector(const double _x) : x(_x), y(_x), z(_x) {}
 
 Vector::Vector(const double _x, const double _y, const double _z) : x(_x), y(_y), z(_z) {}
-
 
 
 
@@ -108,8 +107,6 @@ Vector Vector::operator ^ (const Vector& v) const
 	return cross(*this, v);
 }
 
-
-
 bool Vector::operator == (const Vector& v) const
 {
 	return x==v.x && y==v.y && z==v.z;
@@ -119,8 +116,6 @@ bool Vector::operator != (const Vector& v) const
 {
 	return !(x==v.x && y==v.y && z==v.z);
 }
-
-
 
 double length2(const Vector& v)
 {
@@ -150,6 +145,11 @@ Vector& Vector::normalize()
 	return *this;
 }
 
+Vector lerp(const Vector& start, const Vector& end, const double t)
+{
+	return start * (1-t) + end * t;
+}
+
 const double& Vector::operator [] (const uint8_t i) const
 {
 	return (&x)[i];
@@ -159,8 +159,6 @@ double& Vector::operator [] (const uint8_t i)
 {
 	return (&x)[i];
 }
-
-
 
 std::ostream& operator << (std::ostream &os, const Vector& v)
 {

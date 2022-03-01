@@ -1,6 +1,4 @@
 #pragma once
-#ifndef RANDOM_HPP
-#define RANDOM_HPP
 
 #include <random>
 #include "vector.hpp"
@@ -28,7 +26,3 @@ Vector randomUnitVector();
 Vector randomVectorInXYDisk();
 
 Vector randomUnitXYVector();
-
-
-
-#endif

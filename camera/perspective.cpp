@@ -1,24 +1,31 @@
 #include <cmath>
-#include "../math/random.hpp"
 #include "../math/vector.hpp"
 #include "../math/ray.hpp"
+#include "../math/random.hpp"
 #include "perspective.hpp"
 
 
 
 
-PerspectiveCamera::PerspectiveCamera(Point _lookfrom, Point _lookat, Vector _up, double _fovDeg, double _aspectRatio, double _aperture, double _focalDistance)
+PerspectiveCamera::PerspectiveCamera(
+	const Ray&    _eye,
+	const Vector& _up,
+	const double  _fovDeg,
+	const double  _aspectRatio,
+	const double  _aperture,
+	const double  _focalDistance
+)
 {
 	double fovRad = _fovDeg * 3.14159265358979311600 / 180.0;
 	double halfHeight = std::tan(fovRad / 2.0);
 	double height = 2.0 * halfHeight;
 	double width = _aspectRatio * height;
 
-	z = normalize(_lookfrom - _lookat);
+	z = -normalize(_eye.direction);
 	x = normalize(cross(_up, z));
 	y = cross(z, x);
 
-	position = _lookfrom;
+	position = _eye.origin;
 	viewportRight = _focalDistance * width * x;
 	viewportUp = _focalDistance * height * y;
 	viewportOrigin = position - viewportRight / 2.0 - viewportUp / 2.0 - _focalDistance * z;
@@ -26,12 +33,12 @@ PerspectiveCamera::PerspectiveCamera(Point _lookfrom, Point _lookat, Vector _up,
 	lensRadius = _aperture / 2.0;
 }
 
-Ray PerspectiveCamera::getRay(double u, double v) const
+Ray PerspectiveCamera::getRay(const double u, const double v) const
 {
 	Vector random = lensRadius * randomVectorInXYDisk();
 	Vector offset = x * random.x + y * random.y;
-	return Ray(
+	return Ray{
 		position + offset,
 		viewportOrigin + u * viewportRight + v * viewportUp - position - offset
-	);
+	};
 }

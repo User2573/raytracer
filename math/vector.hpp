@@ -1,17 +1,14 @@
 #pragma once
-#ifndef VECTOR_HPP
-#define VECTOR_HPP
 
 #include <iostream>
-
-#define VECTOR_HPP_USE_ANONYMOUS_STRUCTS
 
 
 
 class Vector
 {
 public:
-#ifdef VECTOR_HPP_USE_ANONYMOUS_STRUCTS
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpedantic"
 	union {
 		struct {
 			double r, g, b;
@@ -20,11 +17,7 @@ public:
 			double x, y, z;
 		};
 	};
-#else
-	double x, y, z;
-	double r, g, b;
-#endif
-
+#pragma GCC diagnostic pop
 
 
 	Vector();
@@ -75,8 +68,6 @@ public:
 
 	Vector& normalize();
 
-
-
 	const double& operator [] (const uint8_t i) const;
 
 	double& operator [] (const uint8_t i);
@@ -86,7 +77,7 @@ public:
 
 
 
-inline Vector operator * (double s, Vector v)
+inline Vector operator * (const double s, const Vector& v)
 {
 	return v * s;
 }
@@ -101,16 +92,9 @@ double length(const Vector& v);
 
 Vector normalize(const Vector& v);
 
-inline Vector lerp(Vector start, Vector end, double t)
-{
-	return start*(1-t) + end*t;
-}
+Vector lerp(const Vector& start, const Vector& end, const double t);
 
 
 
-typedef Vector Point;
-typedef Vector Color;
-
-
-
-#endif
+using Point = Vector;
+using Color = Vector;

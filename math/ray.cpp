@@ -6,19 +6,19 @@
 
 Ray::Ray() : origin(), direction() {}
 
-Ray::Ray(const Vector _direction) : origin(), direction(_direction)
+Ray::Ray(const Vector& _direction) : origin(), direction(_direction)
 {
 	normalizeDirection();
 }
 
-Ray::Ray(const Point _origin, const Vector _direction) : origin(_origin), direction(_direction)
+Ray::Ray(const Point& _origin, const Vector& _direction) : origin(_origin), direction(_direction)
 {
 	normalizeDirection();
 }
 
 
 
-Point Ray::pointAt(double t) const
+Point Ray::at(const double t) const
 {
 	return origin + t*direction;
 }
@@ -46,7 +46,7 @@ std::ostream& operator << (std::ostream& os, const Ray& ray)
 	return os;
 }
 
-Ray rayFromTo(Point from, Point to)
+Ray rayFromTo(const Point& from, const Point& to)
 {
 	return Ray(from, to - from);
 }

@@ -44,7 +44,7 @@ Vector randomVectorInXYDisk()
 	return random;
 }
 
-Vector ranndomUnitXYVector()
+Vector randomUnitXYVector()
 {
 	Vector direction;
 	do
