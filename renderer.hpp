@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include "math/vector.hpp"
 #include "math/ray.hpp"
 #include "camera/camera.hpp"
@@ -10,16 +11,18 @@
 
 class Renderer
 {
-	Image* pimage;
+	std::shared_ptr<Image> image;
 
 
 
-	Color computeColor(const Ray& ray, const Hittable* pscene);
+	Color computeColor(const Ray& ray, const std::shared_ptr<Hittable> scene, const int depth = 0);
 
 public:
-	Renderer(Image* _pimage);
+	Renderer();
+
+	Renderer(std::shared_ptr<Image> _image);
 
 
 
-	void render(const Camera* pcamera, const Hittable* pscene);
+	void render(const std::shared_ptr<Camera> camera, const std::shared_ptr<Hittable> scene);
 };

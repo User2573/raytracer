@@ -150,6 +150,11 @@ Vector lerp(const Vector& start, const Vector& end, const double t)
 	return start * (1-t) + end * t;
 }
 
+Vector rgb(const int r, const int g, const int b)
+{
+	return Vector{r / 255.0, g / 255.0, b / 255.0};
+}
+
 const double& Vector::operator [] (const uint8_t i) const
 {
 	return (&x)[i];

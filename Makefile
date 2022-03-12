@@ -2,8 +2,7 @@ linkTarget = a.out
 
 
 
-# no -Wpedantic because math/vector.hpp uses anonymous structs
-CFLAGS = -std=c++17 -O2 -Wall -Wextra -Wpedantic
+CFLAGS = -std=c++20 -O2 -Wall -Wextra -Wpedantic
 
 headers = renderer.hpp.gch \
           $(patsubst %.hpp,%.hpp.gch,$(wildcard ./**/*.hpp))
@@ -17,20 +16,20 @@ rebuildables = $(headers) $(objects) $(linkTarget)
 
 
 $(linkTarget): $(objects)
-	g++ -g -o $(linkTarget) $(objects) $(CFLAGS)
+	g++ -g -o $(linkTarget) $(objects) -ltbb $(CFLAGS)
 	ls
 
 %.o: %.cpp
 	g++ -o $@ -c $< $(CFLAGS)
 
-$(headers): %.hpp
-	g++ $< $(CFLAGS)
 
 
+.PHONY: clean rmout pch
 
-.PHONY: clean rmo
+pch:
+	g++ stdpch.hpp $(CFLAGS)
 
-rmo: # remove output
+rmout: # remove output
 	rm output.png a.out
 
 clean:

@@ -1,4 +1,5 @@
 #include <cmath>
+#include <numbers>
 #include "../math/vector.hpp"
 #include "../math/ray.hpp"
 #include "../math/random.hpp"
@@ -6,6 +7,15 @@
 
 
 
+PerspectiveCamera::PerspectiveCamera()
+: PerspectiveCamera(
+	{{0, 0, 0}, {0, 0, -1}},
+	{0, 1, 0},
+	70,
+	1,
+	0,
+	5
+) {}
 
 PerspectiveCamera::PerspectiveCamera(
 	const Ray&    _eye,
@@ -16,7 +26,7 @@ PerspectiveCamera::PerspectiveCamera(
 	const double  _focalDistance
 )
 {
-	double fovRad = _fovDeg * 3.14159265358979311600 / 180.0;
+	double fovRad = _fovDeg * std::numbers::pi / 180.0;
 	double halfHeight = std::tan(fovRad / 2.0);
 	double height = 2.0 * halfHeight;
 	double width = _aspectRatio * height;

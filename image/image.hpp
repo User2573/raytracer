@@ -1,22 +1,23 @@
 #pragma once
 
 #include <functional>
+#include <ranges>
 #include <string>
 #include <vector>
 #include "../math/vector.hpp"
+#include "pixel.hpp"
 
 
 
 class Image
 {
 protected:
-	std::vector<Color> data;
+	std::vector<Pixel> data;
 
 public:
 	const int width, height;
 
-
-
+public:
 	Image();
 
 	Image(const int _side);
@@ -30,13 +31,7 @@ public:
 
 	Color& operator () (const int x, const int y);
 
-
-
 	void for_each(const std::function<void(Color&, int, int)>& lambda);
-
-	
-	template <class ExecutionPolicy>
-	void for_each(ExecutionPolicy policy, const std::function<void(Color&, int, int)>& lambda);
 
 	void writeToPPM(const char* filename) const;
 

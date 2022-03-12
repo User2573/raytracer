@@ -5,17 +5,24 @@
 The compiled program takes a filename and outputs a PPM image. If you want to modify the scene, modify the code in main.cpp.
 # File contents
 ## [`image/`](/image/)
-* `fcolor.hpp`       : contains the `FColor` class, which is used for writing RGB colors to a PPM file.
-* `image.hpp`        : contains the `Image` class.
+* `fcolor.hpp`       : `FColor` class, which is used for writing RGB colors to a PPM file.
+* `image.hpp`        : `Image` class.
 ## [`math/`](/math/)
-* `vector.hpp`       : contains the `Vector` class (with aliases `Point` and `Color`).
-* `ray.hpp`          : contains the `Ray` class.
-* `random.hpp`       : contains the `random01` functor and the functions `randomVectorInSphere` / `randomUnitVector`.
+* `vector.hpp`       : `Vector` class (with aliases `Point` and `Color`).
+* `ray.hpp`          : `Ray` class.
+* `random.hpp`       : `random01` functor and some functions for random vector generation.
 ## [`camera/`](/camera/)
-* `icamera.hpp`      : contains the `ICamera` interface class. (do not instantiate)
-* `perspective.hpp`  : contains the `PerspectiveCamera` class.
-* `orthographic.hpp` : contains the `OrthographicCamera` class.
-## material/
-## object/
+* `camera.hpp`       : `Camera` abstract class, for generating a `Ray` from two coordinates.
+* `perspective.hpp`  : `PerspectiveCamera : Camera` class.
+* `orthographic.hpp` : `OrthographicCamera : Camera` class.
+## [`hittable/`](/hittable/)
+* `hitrecord.hpp`    : `HitRecord` class.
+* `hittable.hpp`     : `Hittable` abstract class, for all things a `Ray` can intersect.
+* `sphere.hpp`       : `Sphere : Hittable` class.
+## [`texture/`](/texture/) TODO
+* `texture.hpp`      : `Texture` abstract class, for representing a surface's (possibly varying) color.
+* `constant.hpp`     : `ConstantTexture : Texture` class.
+## [`material/`](/material/) TODO
+* `material.hpp`     : `Material` abstract class, for scattering `Ray`s and getting emitted light.
 # Reference
-I'll be using https://raytracing.github.io/ as a reference project to build atop.
+https://raytracing.github.io/, occasionally https://pbr-book.org/

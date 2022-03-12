@@ -4,14 +4,16 @@
 
 
 
-Ray::Ray() : origin(), direction() {}
+Ray::Ray() : Ray({0, 0, 0}, {0, 0, 1}) {}
 
-Ray::Ray(const Vector& _direction) : origin(), direction(_direction)
-{
-	normalizeDirection();
-}
+Ray::Ray(const Vector& _direction) : Ray({0, 0, 0}, _direction) {}
 
-Ray::Ray(const Point& _origin, const Vector& _direction) : origin(_origin), direction(_direction)
+Ray::Ray(const Point& _origin, const Vector& _direction) : Ray(_origin, _direction, {0, 0, 0}, false) {}
+
+Ray::Ray(const Point& _origin, const Vector& _direction, const Color& _attenuation) : Ray(_origin, _direction, _attenuation, true) {}
+
+Ray::Ray(const Point& _origin, const Vector& _direction, const Color& _attenuation, const bool _scattered)
+: origin(_origin), direction(_direction), attenuation(_attenuation), scattered(_scattered)
 {
 	normalizeDirection();
 }
@@ -40,13 +42,25 @@ Ray& Ray::lookAt(const Point& p)
 std::ostream& operator << (std::ostream& os, const Ray& ray)
 {
 	os << "Ray{\n"
-	"    origin:    " << ray.origin << ",\n"
-	"    direction: " << ray.direction << "\n"
+	"    origin     : " << ray.origin << ",\n"
+	"    direction  : " << ray.direction << ",\n"
+	"    attenuation: " << ray.attenuation << ",\n"
+	"    scattered  : " << ray.scattered << "\n"
 	"}";
 	return os;
 }
 
 Ray rayFromTo(const Point& from, const Point& to)
 {
-	return Ray(from, to - from);
+	return Ray{from, to - from};
+}
+
+Ray rayFromTo(const Point& from, const Point& to, const Color& attenuation)
+{
+	return Ray{from, to - from, attenuation};
+}
+
+Ray rayFromTo(const Point& from, const Point& to, const Color& attenuation, const bool scattered)
+{
+	return Ray{from, to - from, attenuation, scattered};
 }

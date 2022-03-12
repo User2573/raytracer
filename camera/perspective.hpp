@@ -13,6 +13,8 @@ class PerspectiveCamera final : public Camera
 	double lensRadius;
 
 public:
+	PerspectiveCamera();
+
 	PerspectiveCamera(
 		const Ray&    _eye,
 		const Vector& _up,

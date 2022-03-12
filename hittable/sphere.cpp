@@ -1,4 +1,6 @@
 #include <cmath>
+#include <memory>
+#include <numbers>
 #include "../math/vector.hpp"
 #include "../math/ray.hpp"
 #include "hitrecord.hpp"
@@ -6,10 +8,8 @@
 
 
 
-Sphere::Sphere() : Sphere({0, 0, 0} , 1) {}
-
-Sphere::Sphere(const Point& _position, const double _radius)
-: position(_position), radius(_radius) {}
+Sphere::Sphere(const Point& _position, const double _radius, const std::shared_ptr<Material> _material)
+: position(_position), radius(_radius), material(_material) {}
 
 
 
@@ -27,19 +27,29 @@ HitRecord Sphere::hit(const Ray& ray) const
 	Point p = ray.at(t);
 */	Vector oc = ray.origin - position;
 	double a = length2(ray.direction);
-	double b = dot(oc, ray.direction);
+	double hb = dot(oc, ray.direction);
 	double c = length2(oc) - radius*radius;
-	double discrim = b*b - a*c;
 
-	if (discrim < 0.0)
-		return HitRecord{false};
+	double discrim = hb*hb - a*c;
+	if (discrim < 0.0) return HitRecord{false};
 
-	double t = (-b - std::sqrt(discrim)) / a;
-	Vector p = ray.at(t);
+	double sqrtd = std::sqrt(discrim);
+	double t = (-hb - sqrtd) / a;
+	if (t < 0.0) {
+		t = (-hb + sqrtd) / a;
+		if (t < 0.0) return HitRecord{false};
+	}
+
+	Point p = ray.at(t);
+	Vector n = normalize(p - position); // outward normal
+	bool inside = dot(ray.direction, n) > 0.0;
 	return HitRecord{
+		inside,
 		t,
 		p,
-		normalize(p - position),
-		nullptr
+		inside ? -n : n, // flip normal if inside
+		0.5 + atan2(-p.z, p.x) / (2*std::numbers::pi),
+		acos(-p.y) / std::numbers::pi,
+		material
 	};
 }

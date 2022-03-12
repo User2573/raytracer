@@ -1,30 +1,47 @@
+#include <memory>
 #include "math/ray.hpp"
-#include "renderer.hpp"
 #include "image/image.hpp"
 #include "camera/perspective.hpp"
 #include "hittable/hitrecord.hpp"
 #include "hittable/sphere.hpp"
+#include "hittable/hittablelist.hpp"
+#include "material/lambertian.hpp"
+#include "texture/constant.hpp"
+#include "renderer.hpp"
+
 
 int main()
 {
 	constexpr int iWidth = 256;
 	constexpr int iHeight = 256;
 	constexpr double ratio = double(iHeight) / iWidth;
-	Image img{iWidth, iHeight};
+	auto img = std::make_shared<Image>(iWidth, iHeight);
 
-	PerspectiveCamera camera{
-		rayFromTo({0, 0, 0}, {0, 0, -1}), // camera eye
-		{0, 1, 0}, // up vector, do not change
-		60, // fov in degrees
-		ratio, // aspect ratio
-		0, // aperture (how blurry)
-		5 // focus dist.
-	};
+	auto camera = std::make_shared<PerspectiveCamera>(
+		rayFromTo({0, 1, 0}, {0, 1, -1}),
+		{0, 1, 0},
+		75,
+		ratio,
+		0,
+		5
+	);
 
-	Renderer renderer{&img};
+	auto renderer = std::make_shared<Renderer>(img);
 
-	Sphere s1{{0, 0, -3}, 1};
+	auto red = std::make_shared<ConstantTexture>(rgb(203, 74, 67));
+	auto gray = std::make_shared<ConstantTexture>(rgb(127, 127, 127));
 
-	renderer.render(&camera, &s1);
-	img.writeToPNG("output.png");
+	auto diffRed = std::make_shared<LambertianMaterial>(red);
+	auto diffGray = std::make_shared<LambertianMaterial>(gray);
+
+	auto s1 = std::make_shared<Sphere>({0, 1, -3}, 1, diffRed);
+	double c = 4096; // large constant
+	auto floor = std::make_shared<Sphere>({0, -c, 0}, c, &diffGray);
+
+	auto scene = std::make_shared<HittableList>();
+	scene->add(s1);
+	scene->add(floor);
+
+	renderer->render(camera, scene);
+	img->writeToPNG("output.png");
 }

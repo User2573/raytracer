@@ -94,6 +94,8 @@ Vector normalize(const Vector& v);
 
 Vector lerp(const Vector& start, const Vector& end, const double t);
 
+Vector rgb(const int r, const int g, const int b);
+
 
 
 using Point = Vector;

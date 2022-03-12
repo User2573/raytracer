@@ -10,6 +10,8 @@ class Ray
 public:
 	Point origin;
 	Vector direction;
+	Color attenuation;
+	bool scattered;
 
 
 
@@ -18,6 +20,10 @@ public:
 	Ray(const Vector& _direction);
 
 	Ray(const Point& _origin, const Vector& _direction);
+
+	Ray(const Point& _origin, const Vector& _direction, const Color& _attenuation);
+
+	Ray(const Point& _origin, const Vector& _direction, const Color& _attenuation, const bool _scattered);
 
 
 
@@ -33,3 +39,7 @@ public:
 
 
 Ray rayFromTo(const Point& from, const Point& to);
+
+Ray rayFromTo(const Point& from, const Point& to, const Color& attenuation);
+
+Ray rayFromTo(const Point& from, const Point& to, const Color& attenuation, const bool scattered);
