@@ -1,6 +1,6 @@
-#include <algorithm>
+#include <parallel/algorithm>
 #include <cstdlib>
-#include <execution>
+//#include <execution>
 #include <fstream>
 #include <functional>
 #include <ranges>
@@ -42,8 +42,8 @@ Color& Image::operator () (const int x, const int y)
 
 void Image::for_each(const std::function<void(Color&, int, int)>& lambda)
 {
-	std::for_each(
-		std::execution::par_unseq,
+	__gnu_parallel::for_each(
+//		std::execution::par_unseq,
 		data.begin(),
 		data.end(),
 		[&](Pixel& pixel) {
@@ -88,12 +88,12 @@ std::string Image::str() const
 			ss << "\033[0m";
 			pcol = &data.at(x + y*width).value; // top color
 			ss << "\033[48:2:" << int(std::clamp(pcol->r, 0.0, 1.0)*255)
-			          << ":" << int(std::clamp(pcol->g, 0.0, 1.0)*255)
-			          << ":" << int(std::clamp(pcol->b, 0.0, 1.0)*255) << "m";
+			            << ":" << int(std::clamp(pcol->g, 0.0, 1.0)*255)
+			            << ":" << int(std::clamp(pcol->b, 0.0, 1.0)*255) << "m";
 			pcol = &data.at(x + (y-1)*width).value; // bottom color
 			ss << "\033[38:2:" << int(std::clamp(pcol->r, 0.0, 1.0)*255)
-			          << ":" << int(std::clamp(pcol->g, 0.0, 1.0)*255)
-			          << ":" << int(std::clamp(pcol->b, 0.0, 1.0)*255) << "m";
+			            << ":" << int(std::clamp(pcol->g, 0.0, 1.0)*255)
+			            << ":" << int(std::clamp(pcol->b, 0.0, 1.0)*255) << "m";
 			ss << "\u2585"; // lower five-eights box character
 		}
 		ss << "\n";

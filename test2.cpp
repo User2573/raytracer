@@ -1,5 +1,5 @@
 #include <iostream>
-#include <parallel/algorithm>
+#include <algorithm>
 #include <execution>
 #include <chrono>
 #include <thread>
@@ -12,8 +12,8 @@ int main() {
 		foo.push_back(i);
 	}
 
-	__gnu_parallel::for_each(
-	//	std::execution::par_unseq,
+	std::for_each(
+		std::execution::par_unseq,
 		foo.begin(), foo.end(),
 		[](auto &&item) {
 			std::cout << item << std::endl;

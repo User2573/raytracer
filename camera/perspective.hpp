@@ -18,11 +18,18 @@ public:
 	PerspectiveCamera(
 		const Ray&    _eye,
 		const Vector& _up,
-		const double  _fovDeg,
-		const double  _aspectRatio,
+		const double  _vFov,
+		const int     _imageWidth,
+		const int     _imageHeight,
 		const double  _aperture,
 		const double  _focalDistance
 	);
 
 	Ray getRay(const double u, const double v) const override;
 };
+
+
+
+double operator "" _deg(unsigned long long int x);
+
+double operator "" _deg(long double x);

@@ -3,12 +3,13 @@
 #include "../math/ray.hpp"
 #include "../math/random.hpp"
 #include "../hittable/hitrecord.hpp"
+#include "../texture/constant.hpp"
 #include "lambertian.hpp"
 
 
 
 LambertianMaterial::LambertianMaterial()
-: albedo(std::make_shared<ConstantTexture>(Color{0.5}) {}
+: albedo(std::make_shared<ConstantTexture>(Color{0.5})) {}
 
 LambertianMaterial::LambertianMaterial(const Color& _color)
 : albedo(std::make_shared<ConstantTexture>(_color)) {}

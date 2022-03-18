@@ -26,7 +26,7 @@ HitRecord HittableList::hit(const Ray& ray) const
 	HitRecord record{false};
 	bool isFirstHit = true; // first hit is assigned without comparing t
 
-	for (Hittable* const object : objects) {
+	for (const std::shared_ptr<Hittable> object : objects) {
 		HitRecord tmprecord = object->hit(ray);
 		if (tmprecord.hit) {
 			if (isFirstHit) {

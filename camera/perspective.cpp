@@ -11,8 +11,8 @@ PerspectiveCamera::PerspectiveCamera()
 : PerspectiveCamera(
 	{{0, 0, 0}, {0, 0, -1}},
 	{0, 1, 0},
-	70,
-	1,
+	70_deg,
+	1, 1,
 	0,
 	5
 ) {}
@@ -20,16 +20,16 @@ PerspectiveCamera::PerspectiveCamera()
 PerspectiveCamera::PerspectiveCamera(
 	const Ray&    _eye,
 	const Vector& _up,
-	const double  _fovDeg,
-	const double  _aspectRatio,
+	const double  _vFov,
+	const int     _imageWidth,
+	const int     _imageHeight,
 	const double  _aperture,
 	const double  _focalDistance
 )
 {
-	double fovRad = _fovDeg * std::numbers::pi / 180.0;
-	double halfHeight = std::tan(fovRad / 2.0);
-	double height = 2.0 * halfHeight;
-	double width = _aspectRatio * height;
+	double halfHeight = std::tan(_vFov / 2.0);
+	double height = 2 * halfHeight;
+	double width = (static_cast<double>(_imageWidth) / _imageHeight) * height;
 
 	z = -normalize(_eye.direction);
 	x = normalize(cross(_up, z));
@@ -51,4 +51,16 @@ Ray PerspectiveCamera::getRay(const double u, const double v) const
 		position + offset,
 		viewportOrigin + u * viewportRight + v * viewportUp - position - offset
 	};
+}
+
+
+
+double operator "" _deg(unsigned long long int x)
+{
+	return static_cast<double>(x) * std::numbers::pi / 180.0;
+}
+
+double operator "" _deg(long double x)
+{
+	return x * std::numbers::pi / 180.0;
 }
