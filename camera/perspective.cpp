@@ -1,5 +1,4 @@
 #include <cmath>
-#include <numbers>
 #include "../math/vector.hpp"
 #include "../math/ray.hpp"
 #include "../math/random.hpp"
@@ -51,16 +50,4 @@ Ray PerspectiveCamera::getRay(const double u, const double v) const
 		position + offset,
 		viewportOrigin + u * viewportRight + v * viewportUp - position - offset
 	};
-}
-
-
-
-double operator "" _deg(unsigned long long int x)
-{
-	return static_cast<double>(x) * std::numbers::pi / 180.0;
-}
-
-double operator "" _deg(long double x)
-{
-	return x * std::numbers::pi / 180.0;
 }

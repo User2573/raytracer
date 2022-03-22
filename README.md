@@ -2,7 +2,8 @@
 ## (incomplete)
 ---
 # Description
-The compiled program takes a filename and outputs a PPM image. If you want to modify the scene, modify the code in main.cpp.
+* The compiled program outputs a PNG image, through the use of ffmpeg. If you don't have ffmpeg available in the current path, change the code in main.cpp to output a PPM image.
+* If you want to modify the scene, modify the code in main.cpp. Sorry.
 # File contents
 ## [`image/`](/image/)
 * `fcolor.hpp`       : `FColor` class, which is used for writing RGB colors to a PPM file.

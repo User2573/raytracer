@@ -1,5 +1,6 @@
 #pragma once
 
+#include <numbers>
 #include "../math/vector.hpp"
 #include "../math/ray.hpp"
 #include "camera.hpp"
@@ -30,6 +31,12 @@ public:
 
 
 
-double operator "" _deg(unsigned long long int x);
+constexpr double operator "" _deg(unsigned long long int x)
+{
+	return static_cast<double>(x) * std::numbers::pi / 180.0;
+}
 
-double operator "" _deg(long double x);
+constexpr double operator "" _deg(long double x)
+{
+	return x * std::numbers::pi / 180.0;
+}

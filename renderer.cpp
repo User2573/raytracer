@@ -19,19 +19,20 @@ Renderer::Renderer(const std::shared_ptr<Image> _image) : image(_image) {}
 int current = -1;
 Color Renderer::computeColor(const Ray& ray, const std::shared_ptr<Hittable> scene, const int depth)
 {
-	Color color;
+	Color color{};
 	HitRecord record = scene->hit(ray);
 
 	if (current < depth) std::cout << depth << '\n', current = depth;
 	
 	if (record.hit) {
 		Ray scattered = record.material->scatter(ray, record);
+		Color emitted = record.material->emitted(record);
 		Vector bias = 1e-4 * record.normal;
 		scattered.origin += bias;
-		if (depth < 3) {
-			color = scattered.attenuation * computeColor(scattered, scene, depth + 1);
+		if (depth < 8) {
+			color = emitted + scattered.attenuation * computeColor(scattered, scene, depth + 1);
 		} else {
-			color = scattered.attenuation;
+			color = emitted;
 		}
 	}
 
@@ -48,7 +49,7 @@ Color Renderer::computeColor(const Ray& ray, const std::shared_ptr<Hittable> sce
 ==================================================================*/
 void Renderer::render(const std::shared_ptr<Camera> camera, const std::shared_ptr<Hittable> scene)
 {
-	int n = 8;
+	int n = 1;
 	double dist = 1.0 / (n + 2);
 	double invn2 = 1.0 / (n*n); // division bad hurrr
 	double invw = 1.0 / image->width;
@@ -59,7 +60,7 @@ void Renderer::render(const std::shared_ptr<Camera> camera, const std::shared_pt
 			Vector sum{};
 			for (int u = 0; u < n; ++u) {
 				for (int v = 0; v < n; ++v) {
-					Ray ray = camera->getRay( // convoluted shit, don't touch
+					Ray ray = camera->getRay(
 						(x + dist*(1 + 2*u)) * invw,
 						(y + dist*(1 + 2*v)) * invh
 					);

@@ -10,6 +10,7 @@ public:
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wpedantic"
 	union {
+		double array[3];
 		struct {
 			double r, g, b;
 		};
