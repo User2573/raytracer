@@ -29,41 +29,54 @@ public:
 
 
 
+	Vector operator + (const Vector& v) const;
+
 	Vector& operator += (const Vector& v);
+
+	Vector operator - (const Vector& v) const;
 
 	Vector& operator -= (const Vector& v);
 
-	Vector& operator *= (const Vector& v);
+	Vector operator + () const;
 
-	Vector& operator /= (const Vector& v);
+	Vector operator - () const;
+
+	Vector operator * (const double s) const;
 
 	Vector& operator *= (const double s);
 
+	Vector operator / (const double s) const;
+
 	Vector& operator /= (const double s);
+
+	Vector operator * (const Vector& v) const;
+
+	Vector& operator *= (const Vector& v);
+
+	Vector operator / (const Vector& v) const;
+
+	Vector& operator /= (const Vector& v);
+
+	Vector inverse() const;
+
+	double operator | (const Vector& v) const;
+
+	Vector operator ^ (const Vector& v) const;
+
+	bool operator == (const Vector& v) const;
+
+	bool operator != (const Vector& v) const;
 
 	Vector& normalize();
 
-	Vector& invert();
-//	friend std::ostream& operator << (std::ostream &os, const Vector& v);
+	const double& operator [] (const uint8_t i) const;
+
+	double& operator [] (const uint8_t i);
+
+	friend std::ostream& operator << (std::ostream &os, const Vector& v);
 };
 
 
-
-Vector operator + (const Vector& a, const Vector& b);
-
-Vector operator - (const Vector& a, const Vector& b);
-
-Vector operator + (const Vector& v); // useless... but gotta be consistent
-
-Vector operator - (const Vector& v);
-
-Vector operator * (const Vector& a, const Vector& b);
-
-Vector operator / (const Vector& a, const Vector& b);
-
-Vector operator * (const Vector& v, const double s);
-
-Vector operator / (const Vector& v, const double s);
 
 inline Vector operator * (const double s, const Vector& v)
 {
@@ -79,8 +92,6 @@ double length2(const Vector& v);
 double length(const Vector& v);
 
 Vector normalize(const Vector& v);
-
-Vector invert(const Vector& v);
 
 Vector lerp(const Vector& start, const Vector& end, const double t);
 

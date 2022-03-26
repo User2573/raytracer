@@ -1,11 +1,12 @@
-#include <parallel/algorithm>
 #include <cstdlib>
-//#include <execution>
+#include <iostream>//#include <execution>
 #include <fstream>
 #include <functional>
 #include <ranges>
 #include <sstream>
 #include <string>
+#include <thread>
+#include <vector>
 #include "../math/vector.hpp"
 #include "pixel.hpp"
 #include "image.hpp"
@@ -40,15 +41,47 @@ Color& Image::operator () (const int x, const int y)
 	return data.at(x + y*width).value;
 }
 
-void Image::for_each(const std::function<void(Color&, int, int)>& lambda)
+void Image::for_each(const std::function<Color(Color, int, int)>& lambda)
 {
+/*	// WOOHOO std::thread spam!
+	// create 1 thread for each 16 pixels,
+	// have a special thread take care of the remaining pixels
+	const int pixperthread = 16;
+	const int npix = width * height;
+	const int nthreads = npix / pixperthread;
+	std::cout << "pix per thread: " << pixperthread << "\n"
+	             "n pix         : " << npix << "\n"
+				 "n threads     : " << nthreads << "\n";
+
+	std::vector<std::thread> threads;
+	threads.reserve(nthreads + 1);
+	for (int i = 0; i < nthreads; i += pixperthread) {
+		threads.emplace_back([&]() {
+			for (int j = 0; j < pixperthread; j++) {
+				Pixel& pixel = data.at(i + j);
+				lambda(pixel.value, pixel.x, pixel.y);
+			}
+		});
+	}
+	threads.emplace_back([&]() {
+		std::cout << "last thread" << "\n";
+		for (int i = nthreads * pixperthread; i < npix; ++i) {
+			std::cout << "last i: " << i << "\n";
+			Pixel& pixel = data.at(i);
+			lambda(pixel.value, pixel.x, pixel.y);
+		}
+		std::cout << "end last thread" << "\n";
+	});
+	
+	for (std::thread& t : threads) t.join();
+*/
 	__gnu_parallel::for_each(
 //		std::execution::par_unseq,
 		data.begin(),
 		data.end(),
 		[&](Pixel& pixel) {
 			lambda(pixel.value, pixel.x, pixel.y);
-		}
+	    }
 	);
 }
 
