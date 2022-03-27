@@ -55,7 +55,7 @@ void Renderer::render(const std::shared_ptr<Camera> camera, const std::shared_pt
 	double invw = 1.0 / image->width;
 	double invh = 1.0 / image->height;
 	image->for_each(
-		[&](Color& color, int x, int y) {
+		[&](Color color, int x, int y) {
 			// equidistant grid supersampling, best i can do
 			Vector sum{};
 			for (int u = 0; u < n; ++u) {
@@ -68,7 +68,7 @@ void Renderer::render(const std::shared_ptr<Camera> camera, const std::shared_pt
 					sum += computeColor(ray, scene);
 				}
 			}
-			color = sum * invn2;	
+			return  sum * invn2;	
 		}
 	);
 }

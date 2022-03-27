@@ -1,11 +1,9 @@
+#include <parallel/algorithm>
 #include <cstdlib>
-#include <iostream>//#include <execution>
 #include <fstream>
 #include <functional>
-#include <ranges>
 #include <sstream>
 #include <string>
-#include <thread>
 #include <vector>
 #include "../math/vector.hpp"
 #include "pixel.hpp"
@@ -80,7 +78,7 @@ void Image::for_each(const std::function<Color(Color, int, int)>& lambda)
 		data.begin(),
 		data.end(),
 		[&](Pixel& pixel) {
-			lambda(pixel.value, pixel.x, pixel.y);
+			pixel.value = lambda(pixel.value, pixel.x, pixel.y);
 	    }
 	);
 }

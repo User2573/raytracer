@@ -31,7 +31,7 @@ public:
 
 	Color& operator () (const int x, const int y);
 
-	void for_each(const std::function<void(Color&, int, int)>& lambda);
+	void for_each(const std::function<Color(Color, int, int)>& lambda);
 
 	void writeToPPM(const char* filename) const;
 
