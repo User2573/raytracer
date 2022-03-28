@@ -29,7 +29,7 @@ Color Renderer::computeColor(const Ray& ray, const std::shared_ptr<Hittable> sce
 		Color emitted = record.material->emitted(record);
 		Vector bias = 1e-4 * record.normal;
 		scattered.origin += bias;
-		if (depth < 8) {
+		if (depth < 8) { // feel free to change max depth to anything
 			color = emitted + scattered.attenuation * computeColor(scattered, scene, depth + 1);
 		} else {
 			color = emitted;
@@ -49,11 +49,11 @@ Color Renderer::computeColor(const Ray& ray, const std::shared_ptr<Hittable> sce
 ==================================================================*/
 void Renderer::render(const std::shared_ptr<Camera> camera, const std::shared_ptr<Hittable> scene)
 {
-	int n = 1;
-	double dist = 1.0 / (n + 2);
-	double invn2 = 1.0 / (n*n); // division bad hurrr
-	double invw = 1.0 / image->width;
-	double invh = 1.0 / image->height;
+	constexpr int n = 1;
+	constexpr double dist = 1.0 / (n + 2);
+	constexpr double invn2 = 1.0 / (n*n); // division bad hurrr
+	const double invw = 1.0 / image->width;
+	const double invh = 1.0 / image->height;
 	image->for_each(
 		[&](Color color, int x, int y) {
 			// equidistant grid supersampling, best i can do

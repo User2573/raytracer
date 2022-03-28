@@ -65,7 +65,7 @@ int main(int argc, char* argv[]) // parsing... later
 
 	auto checker = std::make_shared<CheckerTexture>(gray2, gray3, true, 1.5);
 	auto diffChecker = std::make_shared<LambertianMaterial>(checker);
-	auto glass = std::make_shared<DielectricMaterial>(1.5);
+	auto glass = std::make_shared<DielectricMaterial>(1.49);
 
 	auto scene = std::make_shared<HittableList>();
 
@@ -78,7 +78,7 @@ int main(int argc, char* argv[]) // parsing... later
 	scene->add(s0out);
 
 	// spheres around center
-	constexpr double r = 0.75;
+	constexpr double r = 1;
 	constexpr double dist = 5.5;
 	constexpr double theta0 = 30_deg;
 	constexpr int n = 7;
