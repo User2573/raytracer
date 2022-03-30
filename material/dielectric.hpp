@@ -18,5 +18,5 @@ public:
 
 
 
-	virtual Ray scatter(const Ray& ray, const HitRecord& record) const override;
+	Ray scatter(const Ray& ray, const HitRecord& record) const override;
 };

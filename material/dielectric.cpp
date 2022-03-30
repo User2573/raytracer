@@ -17,13 +17,14 @@ Ray DielectricMaterial::scatter(const Ray& ray, const HitRecord& record) const
 	double cosTheta = std::min(dot(-ray.direction, record.normal), 1.0);
 	double sinTheta = std::sqrt(1.0 - cosTheta*cosTheta);
 
-	bool cannotRefract = ratio * sinTheta > 1.0;
+	bool cannotRefract = 1.0 < ratio * sinTheta;
 	Vector direction{};
-	if (false){//(cannotRefract || reflectance(cosTheta, ratio) > random01()) { // more likely to reflect near edge
+	if (cannotRefract){// || reflectance(cosTheta, ratio) > random01()) { // more likely to reflect near edge
 		direction = ray.direction - 2*dot(ray.direction, record.normal)*record.normal;
 	} else {
-		direction = ratio * (ray.direction + cosTheta*record.normal); // perp. part		
-		direction -= std::sqrt(std::abs(1.0 - length2(direction))) * record.normal; // add par.
+		const Vector perp = ratio * (ray.direction + cosTheta*record.normal);
+		const Vector par = -std::sqrt(std::abs(1.0 - length2(perp))) * record.normal;
+		direction = perp + par;
 	}
 
 	return Ray{
