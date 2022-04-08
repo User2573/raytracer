@@ -22,15 +22,12 @@ $(linkTarget): $(objects)
 %.o: %.cpp
 	g++ -o $@ -c $< $(CFLAGS)
 
+%.hpp.gch: $(headers)
+	g++ -o $@ $< $(CFLAGS)
 
 
-.PHONY: clean rmout pch
-
-pch:
-	g++ stdpch.hpp $(CFLAGS)
-
-rmout: # remove output
-	rm output.png a.out
+.PHONY: clean
 
 clean:
 	rm $(rebuildables) *.png *.ppm
+
