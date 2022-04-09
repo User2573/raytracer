@@ -36,7 +36,7 @@ Color Renderer::computeColor(const Ray& ray, const std::shared_ptr<Hittable> sce
 		}
 	}
 
-	else {
+	else { // TODO: add skybox class? together with scene?
 		double t = std::clamp(ray.direction.y, 0.0, 1.0);
 		color = lerp(rgb(255, 255, 255), rgb(84, 115, 197), t);
 	}

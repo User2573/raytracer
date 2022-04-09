@@ -69,11 +69,12 @@ int main(int argc, char* argv[]) // parsing... later
 
 	auto scene = std::make_shared<HittableList>();
 
-	auto floor = std::make_shared<Plane>(Vector{0, 1, 0}, 1, glass);
+	
+	auto floor = std::make_shared<Plane>(Vector{0, 1, 0}, 0, diffChecker);
 	scene->add(floor);//, std::make_shared<Plane>(Vector{0, -1, 0}, 0.6, glass));
-
+/*
 	// center hollow glass sphere
-	auto s0out = std::make_shared<Sphere>(Point{0, 2.5, 0}, 2.5, diffChecker);
+	auto s0out = std::make_shared<Sphere>(Point{0, 2.5, 0}, 2.5, glass);
 //	auto s0in = std::make_shared<Sphere>(Point{0, 2.5, 0}, -2.3, glass);
 	scene->add(s0out);
 
@@ -89,9 +90,9 @@ int main(int argc, char* argv[]) // parsing... later
 		const double spherey = dist * std::sin(theta);
 		auto sphere = std::make_shared<Sphere>(Point{spherex, r, spherey}, r, diffuseMaterials[i]);
 		scene->add(sphere);
-	}
+	}*/
 
-
+	scene->add(std::make_shared<Sphere>(Point{4, 6.5, -5}, 2, glass));
 	auto camera = std::make_shared<PerspectiveCamera>(
 		rayFromTo(Point{4, 6.5, -5}, Point{0, 0, 0}),
 		Vector{0, 1, 0},
