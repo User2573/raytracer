@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cmath>
 #include <memory>
 #include <numbers>
@@ -15,17 +16,17 @@ Sphere::Sphere(const Point& _position, const double _radius, const std::shared_p
 
 HitRecord Sphere::hit(const Ray& ray) const
 {
-/*	// thank you scratchapixel!
+	// thank you scratchapixel!
 	Vector l = position - ray.origin;
 	double tca = dot(l, ray.direction);
-	if (tca < 0.0) return HitRecord{false};
+//	if (tca < 0.0) return HitRecord{false};
 	double d2 = length2(l) - tca*tca;
 	double r2 = radius*radius;
 	if (d2 > r2) return HitRecord{false};
-	double t = tca + std::sqrt(r2 - d2); // second intersection at ray.at(tca - sqrt) but it's always farther
-	if (t < 0) return HitRecord{false};
-	Point p = ray.at(t);
-*/	Vector oc = ray.origin - position;
+	double thc = std::sqrt(r2 - d2);
+	double t0 = tca - thc, t1 = tca + thc;
+
+/*	Vector oc = ray.origin - position;
 	double a = length2(ray.direction);
 	double hb = dot(oc, ray.direction);
 	double c = length2(oc) - radius*radius;
@@ -39,13 +40,19 @@ HitRecord Sphere::hit(const Ray& ray) const
 		t = (-hb + sqrtd) / a;
 		if (t < 0.0) return HitRecord{false};
 	}
+*/
+	if (t1 < t0) std::swap(t0, t1);
+	if (t0 < 0) {
+		t0 = t1;
+		if (t0 < 0) return HitRecord{false};
+	}
 
-	Point p = ray.at(t);
+	Point p = ray.at(t0);
 	Vector n = normalize(p - position); // outward normal
 	bool inside = 0.0 < dot(ray.direction, n);
 	return HitRecord{
 		inside,
-		t,
+		t0,
 		p,
 		inside ? -n : n, // flip normal if inside
 		0.5 + atan2(-p.z, p.x) / (2*std::numbers::pi),

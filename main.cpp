@@ -16,8 +16,6 @@
 
 // #include <omp.h>
 
-
-
 int main(int argc, char* argv[]) // parsing... later
 {
 //	omp_set_num_threads(10);
@@ -63,7 +61,7 @@ int main(int argc, char* argv[]) // parsing... later
 	auto img = std::make_shared<Image>(iWidth, iHeight);
 
 
-	auto checker = std::make_shared<CheckerTexture>(gray2, gray3, true, 1.5);
+	auto checker = std::make_shared<CheckerTexture>(gray2, gray3, true, 2.5);
 	auto diffChecker = std::make_shared<LambertianMaterial>(checker);
 	auto glass = std::make_shared<DielectricMaterial>(1.49);
 
@@ -72,37 +70,35 @@ int main(int argc, char* argv[]) // parsing... later
 	
 	auto floor = std::make_shared<Plane>(Vector{0, 1, 0}, 0, diffChecker);
 	scene->add(floor);//, std::make_shared<Plane>(Vector{0, -1, 0}, 0.6, glass));
-/*
+
 	// center hollow glass sphere
 	auto s0out = std::make_shared<Sphere>(Point{0, 2.5, 0}, 2.5, glass);
-//	auto s0in = std::make_shared<Sphere>(Point{0, 2.5, 0}, -2.3, glass);
-	scene->add(s0out);
+	auto s0in = std::make_shared<Sphere>(Point{0, 2.5, 0}, -2.3, glass);
+	scene->add(s0out, s0in);
 
 	// spheres around center
 	constexpr double r = 1;
-	constexpr double dist = 5.5;
-	constexpr double theta0 = 30_deg;
+	constexpr double dist = 7;
+	constexpr double theta0 = -140_deg;
 	constexpr int n = 7;
-	constexpr double dtheta = 360_deg / n;
+	constexpr double dtheta = 360_deg / n - 0_deg;
 	for (int i = 0; i < n; ++i) {
 		const double theta = theta0 + i * dtheta;
 		const double spherex = dist * std::cos(theta);
 		const double spherey = dist * std::sin(theta);
 		auto sphere = std::make_shared<Sphere>(Point{spherex, r, spherey}, r, diffuseMaterials[i]);
 		scene->add(sphere);
-	}*/
+	}
 
-	scene->add(std::make_shared<Sphere>(Point{4, 6.5, -5}, 2, glass));
+	//scene->add(std::make_shared<Sphere>(Point{0, 2, 0}, 2, glass));
 	auto camera = std::make_shared<PerspectiveCamera>(
-		rayFromTo(Point{4, 6.5, -5}, Point{0, 0, 0}),
+		rayFromTo(Point{8, 4.5, -11}, Point{0, 2, 0}),
 		Vector{0, 1, 0},
-		90_deg,
+		65_deg,
 		iWidth, iHeight,
 		0,
 		5
 	);
-
-
 
 	auto renderer = std::make_shared<Renderer>(img);
 

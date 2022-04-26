@@ -21,15 +21,15 @@ Ray DielectricMaterial::scatter(const Ray& ray, const HitRecord& record) const
 	Vector direction{};
 	if (false && cannotRefract){// || reflectance(cosTheta, ratio) > random01()) { // more likely to reflect near edge
 		direction = ray.direction - 2*dot(ray.direction, record.normal)*record.normal;
-	} else {/*
+	} else {
 		const Vector perp = ratio * (ray.direction + cosTheta*record.normal);
 		const Vector par = -std::sqrt(std::abs(1.0 - length2(perp))) * record.normal;
-		direction = perp + par;*/
+		direction = perp + par;
 	}
 
 	return Ray{
 		record.point,
-		ray.direction,
+		direction,
 		Color{1}
 	};
 }

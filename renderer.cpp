@@ -27,8 +27,10 @@ Color Renderer::computeColor(const Ray& ray, const std::shared_ptr<Hittable> sce
 	if (record.hit) {
 		Ray scattered = record.material->scatter(ray, record);
 		Color emitted = record.material->emitted(record);
-		Vector bias = 1e-4 * record.normal;
+		Vector biasNormal = dot(scattered.direction, record.normal) < 0 ? -record.normal : record.normal;
+		Vector bias = 2e-8 * biasNormal;
 		scattered.origin += bias;
+
 		if (depth < 8) { // feel free to change max depth to anything
 			color = emitted + scattered.attenuation * computeColor(scattered, scene, depth + 1);
 		} else {
@@ -44,12 +46,12 @@ Color Renderer::computeColor(const Ray& ray, const std::shared_ptr<Hittable> sce
 	return color;
 }
 
-/*==================================================================
+/*================================================================
               WARNING : terrible handwritten code ahead
-==================================================================*/
+================================================================*/
 void Renderer::render(const std::shared_ptr<Camera> camera, const std::shared_ptr<Hittable> scene)
 {
-	constexpr int n = 1;
+	constexpr double n = 2;
 	constexpr double dist = 1.0 / (n + 2);
 	constexpr double invn2 = 1.0 / (n*n); // division bad hurrr
 	const double invw = 1.0 / image->width;
