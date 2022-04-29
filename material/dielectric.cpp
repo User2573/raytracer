@@ -19,7 +19,7 @@ Ray DielectricMaterial::scatter(const Ray& ray, const HitRecord& record) const
 
 	bool cannotRefract = 1.0 < ratio * sinTheta;
 	Vector direction{};
-	if (false && cannotRefract){// || reflectance(cosTheta, ratio) > random01()) { // more likely to reflect near edge
+	if (cannotRefract || reflectance(cosTheta, ratio) > randomDouble()) { // more likely to reflect near edge
 		direction = ray.direction - 2*dot(ray.direction, record.normal)*record.normal;
 	} else {
 		const Vector perp = ratio * (ray.direction + cosTheta*record.normal);

@@ -5,11 +5,16 @@
 
 
 
-double random01()
+double randomDouble()
 {  
 	static std::uniform_real_distribution<double> dist{ 0.0, 1.0 };
 	static std::mt19937 gen{ std::random_device{}() };
 	return dist(gen);
+}
+
+double randomDouble(const double min, const double max)
+{
+	return randomDouble() * (max - min) + min;
 }
 
 Vector randomVectorInSphere()
@@ -18,7 +23,7 @@ Vector randomVectorInSphere()
 	do
 	{
 		random = 2.0 * Vector(
-			random01() - 0.5, random01() - 0.5, random01() - 0.5
+			randomDouble() - 0.5, randomDouble() - 0.5, randomDouble() - 0.5
 		);
 	}
 	while (length2(random) >= 1.0);
@@ -31,7 +36,7 @@ Vector randomUnitVector()
 	do
 	{
 		direction = 2.0 * Vector(
-			random01() - 0.5, random01() - 0.5, random01() - 0.5
+			randomDouble() - 0.5, randomDouble() - 0.5, randomDouble() - 0.5
 		);
 	}
 	while(length2(direction) <= 1e-8 || length2(direction) >= 1);
@@ -50,7 +55,7 @@ Vector randomVectorInXYDisk()
 	do
 	{
 		random = 2.0 * Vector(
-			random01() - 0.5, random01() - 0.5, 0.0
+			randomDouble() - 0.5, randomDouble() - 0.5, 0.0
 		);
 	}
 	while(length2(random) >= 1);
@@ -63,7 +68,7 @@ Vector randomUnitXYVector()
 	do
 	{
 		direction = 2.0 * Vector(
-			random01() - 0.5, random01() - 0.5, 0.0
+			randomDouble() - 0.5, randomDouble() - 0.5, 0.0
 		);
 	}
 	while(length2(direction) <= 1e-8 || length2(direction) >= 1);

@@ -15,7 +15,7 @@ class Renderer
 
 
 
-	Color computeColor(const Ray& ray, const std::shared_ptr<Hittable> scene, const int depth = 0);
+	Color computeColor(const Ray& ray, const std::shared_ptr<Hittable> scene, const unsigned depth);
 
 public:
 	Renderer();
@@ -24,5 +24,5 @@ public:
 
 
 
-	void render(const std::shared_ptr<Camera> camera, const std::shared_ptr<Hittable> scene);
+	void render(const std::shared_ptr<Camera> camera, const std::shared_ptr<Hittable> scene, const unsigned spp, const unsigned depth = 16);
 };

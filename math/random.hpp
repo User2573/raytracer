@@ -4,7 +4,9 @@
 
 
 
-double random01();
+double randomDouble();
+
+double randomDouble(const double min, const double max);
 
 Vector randomVectorInSphere();
 

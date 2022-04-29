@@ -26,8 +26,10 @@ $(linkTarget): $(objects)
 	g++ -o $@ $< $(CFLAGS)
 
 
-.PHONY: clean
+.PHONY: clean pre
 
 clean:
 	rm $(rebuildables) *.png *.ppm
 
+pre:
+	g++ precompiled.hpp $(CFLAGS)

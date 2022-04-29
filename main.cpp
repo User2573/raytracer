@@ -1,4 +1,5 @@
-#include <cmath>
+
+/*#include <cmath>
 #include <memory>
 #include "math/ray.hpp"
 #include "image/image.hpp"
@@ -13,6 +14,8 @@
 #include "texture/constant.hpp"
 #include "texture/checker.hpp"
 #include "renderer.hpp"
+*/
+#include "precompiled.hpp"
 
 // #include <omp.h>
 
@@ -72,8 +75,9 @@ int main(int argc, char* argv[]) // parsing... later
 	scene->add(floor);//, std::make_shared<Plane>(Vector{0, -1, 0}, 0.6, glass));
 
 	// center hollow glass sphere
-	auto s0out = std::make_shared<Sphere>(Point{0, 2.5, 0}, 2.5, glass);
-	auto s0in = std::make_shared<Sphere>(Point{0, 2.5, 0}, -2.3, glass);
+	constexpr double rs0 = 3;
+	auto s0out = std::make_shared<Sphere>(Point{0, rs0, 0}, rs0, glass);
+	auto s0in = std::make_shared<Sphere>(Point{0, rs0, 0}, .2 - rs0, glass);
 	scene->add(s0out, s0in);
 
 	// spheres around center
@@ -102,6 +106,6 @@ int main(int argc, char* argv[]) // parsing... later
 
 	auto renderer = std::make_shared<Renderer>(img);
 
-	renderer->render(camera, scene);
+	renderer->render(camera, scene, 16);
 	img->writeToPNG("output.png");
 }

@@ -48,7 +48,7 @@ HitRecord Sphere::hit(const Ray& ray) const
 	}
 
 	Point p = ray.at(t0);
-	Vector n = normalize(p - position); // outward normal
+	Vector n = (p - position) / radius; // outward normal
 	bool inside = 0.0 < dot(ray.direction, n);
 	return HitRecord{
 		inside,
