@@ -106,6 +106,6 @@ int main(int argc, char* argv[]) // parsing... later
 
 	auto renderer = std::make_shared<Renderer>(img);
 
-	renderer->render(camera, scene, 16);
+	renderer->render(camera, scene, 3);
 	img->writeToPNG("output.png");
 }

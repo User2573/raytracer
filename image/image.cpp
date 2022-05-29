@@ -39,6 +39,24 @@ Color& Image::operator () (const int x, const int y)
 	return data.at(x + y*width).value;
 }
 
+std::vector<Pixel>::iterator Image::begin()
+{ return data.begin(); }
+
+std::vector<Pixel>::iterator Image::end()
+{ return data.end(); }
+
+std::vector<Pixel>::const_iterator Image::begin() const
+{ return data.cbegin(); }
+
+std::vector<Pixel>::const_iterator Image::end() const
+{ return data.cend(); }
+
+std::vector<Pixel>::const_iterator Image::cbegin() const
+{ return data.cbegin(); }
+
+std::vector<Pixel>::const_iterator Image::cend() const
+{ return data.cend(); }
+/*
 void Image::for_each(const std::function<Color(Color, int, int)>& lambda)
 {
 /*	// WOOHOO std::thread spam!
@@ -72,7 +90,8 @@ void Image::for_each(const std::function<Color(Color, int, int)>& lambda)
 	});
 	
 	for (std::thread& t : threads) t.join();
-*/
+//
+//
 	__gnu_parallel::for_each(
 //		std::execution::par_unseq,
 		data.begin(),
@@ -81,7 +100,7 @@ void Image::for_each(const std::function<Color(Color, int, int)>& lambda)
 			pixel.value = lambda(pixel.value, pixel.x, pixel.y);
 	    }
 	);
-}
+}*/
 
 void Image::writeToPPM(const char* filename) const
 {

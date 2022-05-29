@@ -1,4 +1,5 @@
 #include <cmath>
+#include <execution>
 #include <memory>
 #include <iostream>
 #include "math/vector.hpp"
@@ -27,12 +28,17 @@ Color Renderer::computeColor(const Ray& ray, const std::shared_ptr<Hittable> sce
 	if (record.hit) {
 		Ray scattered = record.material->scatter(ray, record);
 		Color emitted = record.material->emitted(record);
-		Vector biasNormal = dot(scattered.direction, record.normal) < 0 ? -record.normal : record.normal;
-		Vector bias = 2e-8 * biasNormal;
+		const Vector biasNormal = dot(scattered.direction, record.normal) < 0 ? -record.normal : record.normal;
+		const Vector bias = 2e-8 * biasNormal;
 		scattered.origin += bias;
 
-		if (0 < depth) { // feel free to change max depth to anything
-			color = emitted + scattered.attenuation * computeColor(scattered, scene, depth - 1);
+		if (0 < depth) {
+			constexpr int samples = 16;
+			Color incoming{};
+			for (int i = 0; i < samples; ++i)
+				incoming += computeColor(scattered, scene, depth - 1);
+			incoming /= samples;
+			color = emitted + scattered.attenuation * incoming;
 		} else {
 			color = emitted;
 		}
@@ -57,8 +63,13 @@ void Renderer::render(const std::shared_ptr<Camera> camera, const std::shared_pt
 //	const double invn2 = 1.0 / (n*n); // division bad hurrr
 //	const double invw = 1.0 / image->width;
 //	const double invh = 1.0 / image->height;
-	image->for_each([&](Color color, int x, int y) {
+	//image->for_each([&](Color color, int x, int y) {
+	std::for_each(std::execution::par_unseq, std::begin(*image), std::end(*image),
+	[&](Pixel& pixel) {
 		// equidistant grid supersampling, best i can do
+		const unsigned x = pixel.x;
+		const unsigned y = pixel.y;
+
 		Vector sum{};
 		for (unsigned u = 0; u < n; ++u) {
 			for (unsigned v = 0; v < n; ++v) {
@@ -77,6 +88,6 @@ void Renderer::render(const std::shared_ptr<Camera> camera, const std::shared_pt
 			sum += computeColor(ray, scene, depth);
 		}
 
-		return sum / spp;	
+		pixel.value = sum / spp;	
 	});
 }
